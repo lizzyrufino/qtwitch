@@ -48,4 +48,3 @@ This project aims to create a functional architecture for a streaming platform
 
 - [ ] Watch history
   - [ ] Control last watch flag
-  - [ ] Control current timestamp videos
