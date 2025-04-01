@@ -5,14 +5,18 @@ import dev.api.application.config.MessageConfig;
 import dev.api.application.exceptions.ConflictException;
 import dev.api.application.exceptions.InternalServerErrorException;
 import dev.api.application.inbound.dto.request.CreateUserRequest;
-import dev.api.application.ports.services.UserService;
+import dev.api.application.inbound.dto.response.UserResponse;
+import dev.api.domain.entities.User;
+import dev.api.domain.ports.services.UserService;
 import dev.api.common.constants.MessageCodes;
 import dev.api.common.tools.CipherTool;
 import dev.api.common.tools.RandomStringGenerator;
 import dev.api.domain.core.builder.UserBuilder;
-import dev.api.infrastructure.UserRepository;
+import dev.api.infrastructure.database.UserRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+
+import java.util.List;
 
 @ApplicationScoped
 public class UserDomainService implements UserService {
@@ -29,21 +33,36 @@ public class UserDomainService implements UserService {
 
 
     @Override
-    public void create(CreateUserRequest request) {
+    public UserResponse create(CreateUserRequest request) {
         try {
             validateUserAlreadyExists(request);
 
             var saltKey = generateSaltKey();
             var cryptPassword = cryptPassword(request.password(), saltKey);
 
-            var domain = UserBuilder.requestToDomain(request, saltKey, cryptPassword);
+            var user = UserBuilder.requestToDomain(request, saltKey, cryptPassword);
 
-            userRepository.persist(domain);
+            userRepository.persist(user);
+            return user.toResponse();
         } catch (Exception e) {
             log().error(e.getMessage());
             throw e;
         }
+
     }
+
+    @Override
+    public List<UserResponse> list() {
+        try{
+           info(MessageCodes.LOG_TO_LIST_USERS);
+           var users =  userRepository.listAll();
+           return users.stream().map(User::toResponse).toList();
+
+        }catch(Exception e){
+            throw e;
+        }
+    }
+
 
     private void validateUserAlreadyExists(CreateUserRequest request) {
         info(MessageCodes.LOG_USER_VALIDATION);

@@ -6,6 +6,7 @@ public class MessageCodes {
     public static String LOG_USER_VALIDATION = "LOG.001";
 
     public static String LOG_USER_ALREADY_EXISTS = "LOG.002";
+    public static String LOG_TO_LIST_USERS= "LOG.003";
 
     // ERRORS
     public static String CONFLICT_EXCEPTION_USER_ALREADY_EXISTS = "409.0.1";

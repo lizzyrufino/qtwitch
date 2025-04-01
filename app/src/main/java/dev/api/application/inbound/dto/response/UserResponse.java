@@ -40,7 +40,7 @@ public record UserResponse(
                 implementation = SubscriptionResponse.class)
         SubscriptionResponse subscription,
 
-        @Schema(name = "createdAt", description = "User creator profile.", implementation = CreatorResponse.class)
-        CreatorResponse creator
+        @Schema(name = "createdAt", description = "User creator profile.", implementation = ContentCreatorResponse.class)
+        ContentCreatorResponse creator
 ) {
 }

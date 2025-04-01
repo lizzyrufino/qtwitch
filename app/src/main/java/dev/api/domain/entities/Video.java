@@ -43,7 +43,7 @@ public class Video {
 
     @ManyToOne
     @JoinColumn(name = "creator_id", table = "creator")
-    private Creator creator;
+    private ContentCreator creator;
 
     @ManyToOne
     @JoinColumn(name = "category_id", table = "category")

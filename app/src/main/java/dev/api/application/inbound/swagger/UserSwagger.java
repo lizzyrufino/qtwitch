@@ -2,6 +2,7 @@ package dev.api.application.inbound.swagger;
 
 import dev.api.application.inbound.dto.request.CreateUserRequest;
 import jakarta.validation.Valid;
+import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.core.Response;
@@ -15,6 +16,7 @@ import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 @Tag(name = "User", description = "User operations.")
 public interface UserSwagger {
 
+    //USERS
     @POST
     @Operation(summary = "Create new user", description = "Operation to create new user.")
     @APIResponses(value = {
@@ -25,4 +27,17 @@ public interface UserSwagger {
             )
     })
     Response createUser(@Valid @RequestBody CreateUserRequest body);
+
+    @GET
+    @Operation(summary = "List users", description = "Operation to list users.")
+    @APIResponses(value = {
+            @APIResponse(
+                    responseCode = "200",
+                    name = "Users",
+                    description = "List of existent users."
+            )
+    })
+    Response listUser();
+
+
 }

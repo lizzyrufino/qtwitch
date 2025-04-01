@@ -16,7 +16,6 @@ import jakarta.persistence.Table;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.UUID;
 
 @Entity
@@ -64,16 +63,23 @@ public class User extends PanacheEntity {
 
     @OneToOne
     @JoinColumn(name = "creator_id", table = "creator")
-    private Creator creator;
+    private ContentCreator contentCreator;
 
     public UserResponse toResponse() {
         var responseSubscription = Objects.nonNull(subscription) ? subscription.toResponse() : null;
-        var responseCreator = Objects.nonNull(creator) ? creator.toResponse() : null;
+        var responseCreator = Objects.nonNull(contentCreator) ? contentCreator.toResponse() : null;
 
         return new UserResponse(id, name, email, nickname, role.name(), followers, following, createdAt, updatedAt,
                 responseSubscription, responseCreator);
     }
 
+    public void defineContentCreator(ContentCreator contentCreator){
+        this.contentCreator = contentCreator;
+    }
+
+    public boolean isContentCreator(){
+        return Objects.nonNull(this.contentCreator);
+    }
     public static User create(String name, String email, String nickname, String password, String saltKey, RoleType role) {
         var user = new User();
 
